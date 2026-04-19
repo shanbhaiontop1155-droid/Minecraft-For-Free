@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SN Gaming YT</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Press+Start+2P&family=Russo+One&display=swap" rel="stylesheet"/>
+  <style>
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body {
+      background: #000008;
+      font-family: 'Orbitron', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    /* ============================================================
+       DEEP SPACE BACKGROUND - exact dark purple/black like image
+    ============================================================ */
+    .space-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse at 20% 20%, #0a0020 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, #100005 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, #020010 0%, transparent 70%),
+        linear-gradient(135deg, #000008 0%, #08000f 30%, #000510 60%, #060008 100%);
+    }
+
+    /* ============================================================
+       STARS - tiny white dots scattered like image
+    ============================================================ */
+    .stars-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: #ffffff;
+      animation: star-twinkle linear infinite;
+    }
+
+    @keyframes star-twinkle {
+      0%, 100% { opacity: 0.2; transform: scale(1); }
+      50%       { opacity: 1;   transform: scale(1.5); }
+    }
+
+    /* ============================================================
+       RED/BLUE HEX GRID PATTERN - like in image background
+    ============================================================ */
+    .hex-grid {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.18;
+      background-image:
+        linear-gradient(rgba(255,30,30,0.4) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,180,255,0.3) 1px, transparent 1px),
+        linear-gradient(45deg, rgba(255,50,50,0.15) 1px, transparent 1px),
+        linear-gradient(-45deg, rgba(0,150,255,0.15) 1px, transparent 1px);
+      background-size: 60px 60px, 60px 60px, 120px 120px, 120px 120px;
+      animation: hex-drift 20s linear infinite;
+    }
+
+    @keyframes hex-drift {
+      0%   { background-position: 0 0, 0 0, 0 0, 0 0; }
+      100% { background-position: 60px 60px, 60px 60px, 120px 120px, -120px 120px; }
+    }
+
+    /* ============================================================
+       CIRCUIT BOARD LINES - like the texture in image
+    ============================================================ */
+    .circuit-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      opacity: 0.12;
+    }
+
+    .circuit-overlay svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ============================================================
+       MAIN OUTER RING GLOW - huge circular halo like image
+    ============================================================ */
+    .outer-halo {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      background: transparent;
+      box-shadow:
+        0 0 80px 20px rgba(255, 60, 0, 0.12),
+        0 0 150px 60px rgba(0, 180, 255, 0.08),
+        inset 0 0 80px rgba(255, 30, 30, 0.05);
+      z-index: 2;
+      pointer-events: none;
+      animation: halo-breathe 4s ease-in-out infinite;
+    }
+
+    @keyframes halo-breathe {
+      0%, 100% {
+        box-shadow:
+          0 0 80px 20px rgba(255,60,0,0.12),
+          0 0 150px 60px rgba(0,180,255,0.08),
+          inset 0 0 80px rgba(255,30,30,0.05);
+      }
+      50% {
+        box-shadow:
+          0 0 120px 40px rgba(255,60,0,0.20),
+          0 0 200px 80px rgba(0,180,255,0.14),
+          inset 0 0 100px rgba(255,30,30,0.10);
+      }
+    }
+
+    /* ============================================================
+       MINECRAFT BLOCK PARTICLES floating (like green cubes in image)
+    ============================================================ */
+    .mc-blocks-container {
+      position: fixed;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .mc-block {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-radius: 2px;
+      opacity: 0.7;
+      animation: mc-float linear infinite;
+    }
+
+    .mc-block.grass {
+      background: linear-gradient(135deg, #4CAF50, #2E7D32);
+      border: 1px solid #66BB6A;
+      box-shadow: 0 0 8px rgba(76,175,80,0.6), inset 0 0 4px rgba(255,255,255,0.2);
+    }
+
+    .mc-block.dirt {
+      background: linear-gradient(135deg, #795548, #4E342E);
+      border: 1px solid #8D6E63;
+      box-shadow: 0 0 6px rgba(121,85,72,0.5);
+    }
+
+    .mc-block.stone {
+      background: linear-gradient(135deg, #607D8B, #37474F);
+      border: 1px solid #78909C;
+      box-shadow: 0 0 6px rgba(96,125,139,0.4);
+    }
+
+    .mc-block.diamond {
+      background: linear-gradient(135deg, #00BCD4, #0097A7);
+      border: 1px solid #26C6DA;
+      box-shadow: 0 0 10px rgba(0,188,212,0.8), 0 0 20px rgba(0,188,212,0.4);
+      animation: mc-float linear infinite, diamond-glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes diamond-glow {
+      0%   { box-shadow: 0 0 10px rgba(0,188,212,0.8), 0 0 20px rgba(0,188,212,0.4); }
+      100% { box-shadow: 0 0 20px rgba(0,188,212,1), 0 0 40px rgba(0,188,212,0.7); }
+    }
+
+    @keyframes mc-float {
+      0%   { transform: translateY(110vh) rotate(0deg);   opacity: 0; }
+      5%   { opacity: 0.7; }
+      95%  { opacity: 0.7; }
+      100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* ============================================================
+       SPARK / EMBER PARTICLES
+    ============================================================ */
+    .embers-container {
+      position: fixed;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .ember {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      animation: ember-rise ease-out infinite;
+    }
+
+    @keyframes ember-rise {
+      0%   { transform: translate(0, 0) scale(1); opacity: 1; }
+      100% { transform: translate(var(--dx), -200px) scale(0); opacity: 0; }
+    }
+
+    /* ============================================================
+       LIGHTNING BOLTS - like electric arcs in image
+    ============================================================ */
+    .lightning-container {
+      position: fixed;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .lightning-bolt {
+      position: absolute;
+      width: 2px;
+      background: linear-gradient(to bottom, transparent, #00c8ff, #ffffff, #00c8ff, transparent);
+      filter: blur(1px);
+      opacity: 0;
+      animation: lightning-flash linear infinite;
+    }
+
+    @keyframes lightning-flash {
+      0%   { opacity: 0; transform: scaleY(0) scaleX(1); }
+      2%   { opacity: 1; transform: scaleY(1) scaleX(3); filter: blur(0px); }
+      5%   { opacity: 0.5; }
+      8%   { opacity: 0; }
+      100% { opacity: 0; }
+    }
+
+    .lightning-bolt.red {
+      background: linear-gradient(to bottom, transparent, #ff3030, #ffffff, #ff3030, transparent);
+    }
+
+    /* ============================================================
+       MAIN CONTENT WRAPPER
+    ============================================================ */
+    .main-content {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      padding: 40px 20px;
+    }
+
+    /* ============================================================
+       LOGO OUTER RING - exact multi-ring like image
+    ============================================================ */
+    .logo-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Outermost text ring */
+    .ring-text-outer {
+      position: absolute;
+      width: 310px;
+      height: 310px;
+      animation: rotate-ring 12s linear infinite;
+    }
+
+    @keyframes rotate-ring {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .ring-text-outer text {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      fill: #00c8ff;
+      letter-spacing: 3px;
+      filter: drop-shadow(0 0 4px #00c8ff);
+    }
+
+    /* Outer neon ring - BLUE */
+    .ring-blue-outer {
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      border: 3px solid #00c8ff;
+      box-shadow:
+        0 0 15px #00c8ff,
+        0 0 30px #00c8ff88,
+        inset 0 0 15px #00c8ff33;
+      animation: ring-pulse-blue 2.5s ease-in-out infinite;
+    }
+
+    @keyframes ring-pulse-blue {
+      0%, 100% {
+        box-shadow: 0 0 15px #00c8ff, 0 0 30px #00c8ff88, inset 0 0 15px #00c8ff33;
+        border-color: #00c8ff;
+      }
+      50% {
+        box-shadow: 0 0 25px #00c8ff, 0 0 50px #00c8ffaa, inset 0 0 25px #00c8ff55;
+        border-color: #66e0ff;
+      }
+    }
+
+    /* Middle ring - RED/ORANGE like fire ring in image */
+    .ring-red-mid {
+      position: absolute;
+      width: 248px;
+      height: 248px;
+      border-radius: 50%;
+      border: 4px solid #ff4400;
+      box-shadow:
+        0 0 20px #ff4400,
+        0 0 40px #ff440088,
+        0 0 60px #ff220044,
+        inset 0 0 20px #ff440033;
+      animation: ring-pulse-red 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes ring-pulse-red {
+      0% {
+        box-shadow: 0 0 20px #ff4400, 0 0 40px #ff440088, 0 0 60px #ff220044, inset 0 0 20px #ff440033;
+        border-color: #ff4400;
+      }
+      100% {
+        box-shadow: 0 0 35px #ff6600, 0 0 65px #ff6600aa, 0 0 90px #ff440066, inset 0 0 30px #ff440055;
+        border-color: #ff8800;
+      }
+    }
+
+    /* conic gradient spinning ring */
+    .ring-conic-spin {
+      position: absolute;
+      width: 262px;
+      height: 262px;
+      border-radius: 50%;
+      background: conic-gradient(
+        from 0deg,
+        #ff0000 0deg,
+        #ff4400 30deg,
+        #00c8ff 90deg,
+        #0044ff 120deg,
+        #ff0000 180deg,
+        #00c8ff 240deg,
+        #ff4400 300deg,
+        #ff0000 360deg
+      );
+      opacity: 0.6;
+      mask-image: radial-gradient(circle, transparent 118px, black 122px, black 130px, transparent 133px);
+      -webkit-mask-image: radial-gradient(circle, transparent 118px, black 122px, black 130px, transparent 133px);
+      animation: conic-spin 4s linear infinite;
+      filter: blur(2px);
+    }
+
+    @keyframes conic-spin {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Inner dark circle - main logo face */
+    .logo-face {
+      position: relative;
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 30%, #1a0a00 0%, #0a0010 40%, #000008 70%, #050015 100%);
+      border: 2px solid rgba(0,200,255,0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    /* inner glow on logo face */
+    .logo-face::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background:
+        radial-gradient(ellipse at 30% 25%, rgba(255,100,0,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 75%, rgba(0,100,255,0.12) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* inner circuit pattern */
+    .logo-face::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background-image:
+        linear-gradient(rgba(255,50,50,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,180,255,0.06) 1px, transparent 1px);
+      background-size: 20px 20px;
+      pointer-events: none;
+    }
+
+    /* ============================================================
+       SN GAMING TEXT inside logo - exact match to image
+    ============================================================ */
+    .logo-sn-text {
+      position: relative;
+      z-index: 3;
+      font-family: 'Russo One', sans-serif;
+      font-size: 42px;
+      font-weight: 900;
+      line-height: 0.9;
+      text-align: center;
+      background: linear-gradient(180deg,
+        #ff6600 0%,
+        #ff3300 25%,
+        #cc0000 50%,
+        #990000 75%,
+        #660000 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 8px rgba(255,80,0,0.8)) drop-shadow(0 0 16px rgba(255,40,0,0.5));
+      letter-spacing: -1px;
+      text-transform: uppercase;
+    }
+
+    .logo-yt-text {
+      position: relative;
+      z-index: 3;
+      font-family: 'Russo One', sans-serif;
+      font-size: 32px;
+      font-weight: 900;
+      background: linear-gradient(180deg,
+        #ff8800 0%,
+        #ff4400 40%,
+        #dd1100 80%,
+        #aa0000 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 6px rgba(255,100,0,0.7));
+      margin-top: -4px;
+      letter-spacing: 4px;
+    }
+
+    /* Controller SVG */
+    .controller-icon {
+      position: relative;
+      z-index: 3;
+      margin-top: 6px;
+    }
+
+    .controller-icon svg {
+      width: 60px;
+      height: 40px;
+      filter:
+        drop-shadow(0 0 8px rgba(0,200,255,0.8))
+        drop-shadow(0 0 16px rgba(0,150,255,0.5))
+        drop-shadow(0 0 24px rgba(0,100,255,0.3));
+    }
+
+    /* Bottom text - "SN GAMING YT" arc */
+    .logo-bottom-text {
+      position: relative;
+      z-index: 3;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 7px;
+      font-weight: 700;
+      color: #00c8ff;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-top: 6px;
+      text-shadow: 0 0 8px #00c8ff, 0 0 16px #00c8ff;
+    }
+
+    /* top small label */
+    .logo-top-label {
+      position: absolute;
+      top: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 6px;
+      font-weight: 700;
+      color: #00c8ff;
+      letter-spacing: 2px;
+      text-shadow: 0 0 6px #00c8ff;
+      white-space: nowrap;
+    }
+
+    /* ============================================================
+       FIRE PARTICLES around logo
+    ============================================================ */
+    .fire-ring {
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .fire-particle {
+      position: absolute;
+      border-radius: 50% 50% 30% 30%;
+      animation: fire-dance linear infinite;
+      transform-origin: bottom center;
+    }
+
+    @keyframes fire-dance {
+      0%   { transform: translateY(0) scaleX(1) rotate(0deg);   opacity: 0.9; }
+      50%  { transform: translateY(-25px) scaleX(0.7) rotate(5deg);  opacity: 0.6; }
+      100% { transform: translateY(-50px) scaleX(0.3) rotate(-5deg); opacity: 0; }
+    }
+
+    /* ============================================================
+       DIAMOND SPARKLE CORNER - like in image bottom right
+    ============================================================ */
+    .diamond-sparkle {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 20;
+      width: 20px;
+      height: 20px;
+      animation: sparkle-spin 3s linear infinite;
+    }
+
+    .diamond-sparkle::before,
+    .diamond-sparkle::after {
+      content: '✦';
+      position: absolute;
+      color: #ffffff;
+      font-size: 16px;
+      text-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff;
+    }
+
+    .diamond-sparkle::before { top: 0; left: 0; }
+    .diamond-sparkle::after  { font-size: 8px; bottom: -4px; right: -4px; animation: sparkle-pulse 1.5s ease-in-out infinite; }
+
+    @keyframes sparkle-spin   { 0% { transform: rotate(0deg); }   100% { transform: rotate(360deg); } }
+    @keyframes sparkle-pulse  { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+    /* ============================================================
+       CORNER DECORATIONS - glowing brackets
+    ============================================================ */
+    .corner-deco {
+      position: fixed;
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    .corner-deco::before,
+    .corner-deco::after {
+      content: '';
+      position: absolute;
+      width: 40px;
+      height: 40px;
+    }
+
+    .corner-tl { top: 20px; left: 20px; }
+    .corner-tl::before { top: 0; left: 0; border-top: 3px solid #00c8ff; border-left: 3px solid #00c8ff; box-shadow: -2px -2px 10px #00c8ff; }
+
+    .corner-tr { top: 20px; right: 20px; }
+    .corner-tr::before { top: 0; right: 0; border-top: 3px solid #ff4400; border-right: 3px solid #ff4400; box-shadow: 2px -2px 10px #ff4400; }
+
+    .corner-bl { bottom: 20px; left: 20px; }
+    .corner-bl::before { bottom: 0; left: 0; border-bottom: 3px solid #ff4400; border-left: 3px solid #ff4400; box-shadow: -2px 2px 10px #ff4400; }
+
+    .corner-br { bottom: 20px; right: 20px; }
+    .corner-br::before { bottom: 0; right: 0; border-bottom: 3px solid #00c8ff; border-right: 3px solid #00c8ff; box-shadow: 2px 2px 10px #00c8ff; }
+
+    .corner-deco::before { display: block; position: absolute; }
+
+    /* ============================================================
+       PAGE TITLE
+    ============================================================ */
+    .page-title {
+      position: relative;
+      text-align: center;
+      line-height: 1;
+    }
+
+    .page-title-main {
+      display: block;
+      font-family: 'Russo One', sans-serif;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 900;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      background: linear-gradient(180deg,
+        #ffffff 0%,
+        #00e5ff 40%,
+        #0088ff 80%,
+        #004488 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 20px rgba(0,200,255,0.8)) drop-shadow(0 0 40px rgba(0,150,255,0.4));
+      animation: title-flicker 6s ease-in-out infinite;
+    }
+
+    @keyframes title-flicker {
+      0%, 90%, 100% { opacity: 1; }
+      92%           { opacity: 0.85; }
+      94%           { opacity: 1; }
+      96%           { opacity: 0.9; }
+    }
+
+    .page-title-sub {
+      display: block;
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(0.7rem, 2vw, 1rem);
+      font-weight: 700;
+      letter-spacing: 12px;
+      text-transform: uppercase;
+      color: #ff4400;
+      text-shadow: 0 0 10px #ff4400, 0 0 20px #ff440088;
+      margin-top: 6px;
+    }
+
+    /* ============================================================
+       DOWNLOAD BUTTON - RED GLOWING BEAST
+    ============================================================ */
+    .btn-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-label-top {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
+      color: #ffcc00;
+      text-shadow: 0 0 8px #ffcc00, 0 0 16px #ff8800;
+      letter-spacing: 2px;
+      animation: blink-label 1.2s step-end infinite;
+    }
+
+    @keyframes blink-label {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+
+    .btn-outer-wrap {
+      position: relative;
+      display: inline-block;
+    }
+
+    /* animated border glow rings around button */
+    .btn-glow-ring {
+      position: absolute;
+      inset: -8px;
+      border-radius: 14px;
+      border: 2px solid #ff2200;
+      opacity: 0;
+      animation: ring-expand 2s ease-out infinite;
+    }
+
+    .btn-glow-ring:nth-child(2) { animation-delay: 0.7s; }
+    .btn-glow-ring:nth-child(3) { animation-delay: 1.4s; }
+
+    @keyframes ring-expand {
+      0%   { inset: -4px;  opacity: 0.9; border-color: #ff2200; }
+      100% { inset: -30px; opacity: 0;   border-color: #ff6600; }
+    }
+
+    /* The actual download button */
+    .download-btn {
+      position: relative;
+      z-index: 2;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 22px 50px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: clamp(11px, 2.5vw, 15px);
+      color: #ffffff;
+      text-shadow:
+        0 0 10px rgba(255,255,255,0.8),
+        0 2px 4px rgba(0,0,0,0.8);
+      letter-spacing: 1px;
+      line-height: 1.6;
+      text-align: center;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      border-radius: 8px;
+      background: linear-gradient(180deg,
+        #ff6666 0%,
+        #ee2222 15%,
+        #cc0000 40%,
+        #990000 70%,
+        #770000 85%,
+        #550000 100%
+      );
+      box-shadow:
+        0 0 0 3px #ff0000,
+        0 0 20px #ff0000,
+        0 0 40px #ff000088,
+        0 0 80px #ff000044,
+        0 6px 0 #440000,
+        inset 0 1px 0 rgba(255,150,150,0.3),
+        inset 0 -2px 0 rgba(0,0,0,0.4);
+      animation: btn-throb 1.5s ease-in-out infinite;
+      transition: transform 0.08s ease, box-shadow 0.08s ease;
+      min-width: 280px;
+    }
+
+    @keyframes btn-throb {
+      0%, 100% {
+        box-shadow:
+          0 0 0 3px #ff0000,
+          0 0 20px #ff0000,
+          0 0 40px #ff000088,
+          0 0 80px #ff000044,
+          0 6px 0 #440000,
+          inset 0 1px 0 rgba(255,150,150,0.3),
+          inset 0 -2px 0 rgba(0,0,0,0.4);
+      }
+      50% {
+        box-shadow:
+          0 0 0 5px #ff3300,
+          0 0 35px #ff0000,
+          0 0 70px #ff0000aa,
+          0 0 120px #ff000066,
+          0 6px 0 #440000,
+          inset 0 1px 0 rgba(255,150,150,0.4),
+          inset 0 -2px 0 rgba(0,0,0,0.4);
+      }
+    }
+
+    .download-btn:hover {
+      transform: translateY(-4px) scale(1.04);
+      box-shadow:
+        0 0 0 5px #ff4400,
+        0 0 50px #ff0000,
+        0 0 100px #ff0000cc,
+        0 0 150px #ff000088,
+        0 10px 0 #330000,
+        inset 0 1px 0 rgba(255,180,180,0.5),
+        inset 0 -2px 0 rgba(0,0,0,0.4);
+    }
+
+    .download-btn:active {
+      transform: translateY(3px) scale(0.98);
+      box-shadow:
+        0 0 0 3px #ff0000,
+        0 0 15px #ff0000,
+        0 2px 0 #440000,
+        inset 0 1px 0 rgba(255,100,100,0.2),
+        inset 0 -1px 0 rgba(0,0,0,0.5);
+    }
+
+    /* Minecraft grass icon line in button */
+    .btn-mc-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.85);
+    }
+
+    .btn-mc-block {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+      background: linear-gradient(135deg, #4CAF50, #2E7D32);
+      border: 1px solid #66BB6A;
+      box-shadow: 0 0 6px rgba(76,175,80,0.8);
+      flex-shrink: 0;
+    }
+
+    /* scan line on button */
+    .btn-scanline {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: rgba(255,200,200,0.4);
+      border-radius: 8px 8px 0 0;
+      animation: btn-scan 3s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes btn-scan {
+      0%   { top: 0%;   opacity: 0.6; }
+      100% { top: 100%; opacity: 0; }
+    }
+
+    /* spark particles on button */
+    .btn-sparks {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: visible;
+      z-index: 3;
+    }
+
+    .btn-spark {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      animation: btn-spark-fly ease-out infinite;
+    }
+
+    @keyframes btn-spark-fly {
+      0%   { transform: translate(0,0) scale(1); opacity: 1; }
+      100% { transform: translate(var(--sx), var(--sy)) scale(0); opacity: 0; }
+    }
+
+    /* ============================================================
+       STATUS BAR
+    ============================================================ */
+    .status-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 8px;
+      color: rgba(0,200,255,0.7);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #00ff88;
+      box-shadow: 0 0 8px #00ff88;
+      animation: status-blink 1s step-end infinite;
+    }
+
+    @keyframes status-blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.2; }
+    }
+
+    /* ============================================================
+       HORIZONTAL DIVIDER LINES
+    ============================================================ */
+    .divider {
+      width: clamp(200px, 60vw, 500px);
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        #ff440044 15%,
+        #ff4400 30%,
+        #00c8ff 50%,
+        #ff4400 70%,
+        #ff440044 85%,
+        transparent 100%
+      );
+      box-shadow: 0 0 10px rgba(0,200,255,0.3);
+    }
+
+    /* ============================================================
+       SCANLINES OVERLAY
+    ============================================================ */
+    .scanlines-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0,0,0,0.06) 0px,
+        rgba(0,0,0,0.06) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+    }
+
+    /* ============================================================
+       VIGNETTE
+    ============================================================ */
+    .vignette {
+      position: fixed;
+      inset: 0;
+      z-index: 6;
+      pointer-events: none;
+      background: radial-gradient(
+        ellipse at center,
+        transparent 40%,
+        rgba(0,0,0,0.5) 75%,
+        rgba(0,0,0,0.8) 100%
+      );
+    }
+
+    /* ============================================================
+       GLITCH EFFECT on title - like the energy disruption in image
+    ============================================================ */
+    .glitch-wrapper {
+      position: relative;
+    }
+
+    .glitch-wrapper::before,
+    .glitch-wrapper::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      font-family: 'Russo One', sans-serif;
+      font-size: inherit;
+      font-weight: 900;
+      letter-spacing: inherit;
+      background: inherit;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .glitch-wrapper::before {
+      left: 2px;
+      filter: drop-shadow(-2px 0 #ff0000);
+      animation: glitch-1 5s infinite;
+      opacity: 0.6;
+    }
+
+    .glitch-wrapper::after {
+      left: -2px;
+      filter: drop-shadow(2px 0 #00c8ff);
+      animation: glitch-2 5s infinite;
+      opacity: 0.6;
+    }
+
+    @keyframes glitch-1 {
+      0%, 90%, 100% { clip-path: inset(100% 0 100% 0); }
+      91% { clip-path: inset(20% 0 60% 0); transform: translateX(-3px); }
+      93% { clip-path: inset(70% 0 10% 0); transform: translateX(3px); }
+      95% { clip-path: inset(40% 0 40% 0); transform: translateX(-2px); }
+    }
+
+    @keyframes glitch-2 {
+      0%, 88%, 100% { clip-path: inset(100% 0 100% 0); }
+      89% { clip-path: inset(60% 0 20% 0); transform: translateX(3px); }
+      91% { clip-path: inset(10% 0 70% 0); transform: translateX(-3px); }
+      93% { clip-path: inset(50% 0 30% 0); transform: translateX(2px); }
+    }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 600px) {
+      .ring-text-outer { width: 250px; height: 250px; }
+      .ring-blue-outer { width: 224px; height: 224px; }
+      .ring-red-mid    { width: 196px; height: 196px; }
+      .ring-conic-spin { width: 210px; height: 210px;
+        mask-image: radial-gradient(circle, transparent 93px, black 96px, black 104px, transparent 107px);
+        -webkit-mask-image: radial-gradient(circle, transparent 93px, black 96px, black 104px, transparent 107px);
+      }
+      .logo-face { width: 165px; height: 165px; }
+      .logo-sn-text { font-size: 32px; }
+      .logo-yt-text { font-size: 24px; }
+      .controller-icon svg { width: 46px; height: 30px; }
+      .download-btn { min-width: 240px; padding: 18px 30px; }
+    }
+
+    @media (max-width: 380px) {
+      .download-btn { min-width: 200px; font-size: 10px; padding: 16px 20px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ── BACKGROUND LAYERS ── -->
+  <div class="space-bg"></div>
+
+  <div class="stars-layer" id="starsLayer"></div>
+
+  <div class="hex-grid"></div>
+
+  <!-- Circuit SVG overlay -->
+  <div class="circuit-overlay">
+    <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="glow-blue"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="glow-red"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <!-- horizontal lines -->
+      <g stroke="#00c8ff" stroke-width="0.6" opacity="0.5" filter="url(#glow-blue)">
+        <line x1="0" y1="100" x2="350" y2="100"/>
+        <line x1="0" y1="200" x2="200" y2="200"/>
+        <line x1="0" y1="400" x2="280" y2="400"/>
+        <line x1="850" y1="100" x2="1200" y2="100"/>
+        <line x1="900" y1="300" x2="1200" y2="300"/>
+        <line x1="820" y1="500" x2="1200" y2="500"/>
+        <line x1="0" y1="600" x2="300" y2="600"/>
+        <line x1="900" y1="700" x2="1200" y2="700"/>
+      </g>
+      <!-- vertical lines -->
+      <g stroke="#00c8ff" stroke-width="0.6" opacity="0.4" filter="url(#glow-blue)">
+        <line x1="100" y1="0" x2="100" y2="300"/>
+        <line x1="200" y1="0" x2="200" y2="180"/>
+        <line x1="300" y1="0" x2="300" y2="120"/>
+        <line x1="1100" y1="0" x2="1100" y2="280"/>
+        <line x1="1000" y1="0" x2="1000" y2="180"/>
+        <line x1="100" y1="500" x2="100" y2="800"/>
+        <line x1="1100" y1="420" x2="1100" y2="800"/>
+      </g>
+      <!-- red accent lines -->
+      <g stroke="#ff3300" stroke-width="0.8" opacity="0.5" filter="url(#glow-red)">
+        <line x1="0" y1="150" x2="250" y2="150"/>
+        <line x1="950" y1="200" x2="1200" y2="200"/>
+        <line x1="0" y1="650" x2="260" y2="650"/>
+        <line x1="940" y1="600" x2="1200" y2="600"/>
+        <line x1="150" y1="0" x2="150" y2="200"/>
+        <line x1="1050" y1="0" x2="1050" y2="200"/>
+        <line x1="150" y1="600" x2="150" y2="800"/>
+        <line x1="1050" y1="600" x2="1050" y2="800"/>
+      </g>
+      <!-- dots at nodes -->
+      <g fill="#00c8ff" opacity="0.7" filter="url(#glow-blue)">
+        <circle cx="100" cy="100" r="3"/>
+        <circle cx="200" cy="200" r="2"/>
+        <circle cx="300" cy="400" r="3"/>
+        <circle cx="1100" cy="100" r="3"/>
+        <circle cx="1000" cy="300" r="2"/>
+        <circle cx="100" cy="600" r="3"/>
+        <circle cx="1100" cy="700" r="3"/>
+      </g>
+      <g fill="#ff3300" opacity="0.7" filter="url(#glow-red)">
+        <circle cx="150" cy="150" r="3"/>
+        <circle cx="950" cy="200" r="2"/>
+        <circle cx="150" cy="650" r="3"/>
+        <circle cx="1050" cy="600" r="3"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="outer-halo"></div>
+
+  <!-- MC Blocks -->
+  <div class="mc-blocks-container" id="mcBlocks"></div>
+
+  <!-- Embers -->
+  <div class="embers-container" id="embers"></div>
+
+  <!-- Lightning -->
+  <div class="lightning-container" id="lightning"></div>
+
+  <div class="vignette"></div>
+  <div class="scanlines-overlay"></div>
+
+  <!-- ── CORNER DECORATIONS ── -->
+  <div class="corner-deco corner-tl"></div>
+  <div class="corner-deco corner-tr"></div>
+  <div class="corner-deco corner-bl"></div>
+  <div class="corner-deco corner-br"></div>
+
+  <!-- ── DIAMOND SPARKLE ── -->
+  <div class="diamond-sparkle"></div>
+
+  <!-- ════════════════════════════════════════
+       MAIN CONTENT
+  ════════════════════════════════════════ -->
+  <div class="main-content">
+
+    <!-- ── LOGO ── -->
+    <div class="logo-wrapper">
+
+      <!-- Rotating text ring -->
+      <svg class="ring-text-outer" viewBox="0 0 310 310">
+        <defs>
+          <path id="textCircle" d="M 155,155 m -130,0 a 130,130 0 1,1 260,0 a 130,130 0 1,1 -260,0"/>
+        </defs>
+        <text>
+          <textPath href="#textCircle" startOffset="0%">
+            ✦ SN GAMING YT ✦ SN GAMING YT ✦ SN GAMING YT ✦ SN GAMING YT
+          </textPath>
+        </text>
+      </svg>
+
+      <!-- Blue outer ring -->
+      <div class="ring-blue-outer"></div>
+
+      <!-- Conic spinning ring -->
+      <div class="ring-conic-spin"></div>
+
+      <!-- Red fire ring -->
+      <div class="ring-red-mid"></div>
+
+      <!-- Fire particles around ring -->
+      <div class="fire-ring" id="fireRing"></div>
+
+      <!-- Logo face -->
+      <div class="logo-face">
+        <div class="logo-top-label">SN GAMING YT</div>
+
+        <div class="logo-sn-text">SN<br>GAMING</div>
+        <div class="logo-yt-text">YT</div>
+
+        <!-- Controller SVG (exact shape) -->
+        <div class="controller-icon">
+          <svg viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- body -->
+            <path d="M20 30 Q10 30 8 45 L5 65 Q4 74 12 74 Q18 74 22 68 L30 55 Q34 50 40 50 L80 50 Q86 50 90 55 L98 68 Q102 74 108 74 Q116 74 115 65 L112 45 Q110 30 100 30 Z" fill="#1a1a3a" stroke="#00c8ff" stroke-width="2"/>
+            <!-- left grip -->
+            <path d="M20 30 Q14 50 14 60 L22 68 Q26 55 30 50 L40 50 L40 30 Z" fill="#151528"/>
+            <!-- right grip -->
+            <path d="M100 30 Q106 50 106 60 L98 68 Q94 55 90 50 L80 50 L80 30 Z" fill="#151528"/>
+            <!-- d-pad left stick area -->
+            <rect x="28" y="32" width="6" height="14" rx="2" fill="#00c8ff" opacity="0.8"/>
+            <rect x="24" y="36" width="14" height="6" rx="2" fill="#00c8ff" opacity="0.8"/>
+            <!-- right buttons -->
+            <circle cx="88" cy="35" r="4" fill="#ff3366" opacity="0.9"/>
+            <circle cx="96" cy="40" r="4" fill="#33cc33" opacity="0.9"/>
+            <circle cx="80" cy="40" r="4" fill="#3366ff" opacity="0.9"/>
+            <circle cx="88" cy="45" r="4" fill="#ffcc00" opacity="0.9"/>
+            <!-- center buttons -->
+            <rect x="52" y="34" width="10" height="5" rx="2" fill="#ffffff" opacity="0.3"/>
+            <rect x="58" y="34" width="10" height="5" rx="2" fill="#ffffff" opacity="0.3"/>
+            <!-- analog sticks -->
+            <circle cx="42" cy="46" r="6" fill="#2a2a4a" stroke="#00c8ff" stroke-width="1.5"/>
+            <circle cx="42" cy="46" r="3" fill="#00c8ff" opacity="0.6"/>
+            <circle cx="78" cy="46" r="6" fill="#2a2a4a" stroke="#00c8ff" stroke-width="1.5"/>
+            <circle cx="78" cy="46" r="3" fill="#00c8ff" opacity="0.6"/>
+            <!-- highlights -->
+            <path d="M25 32 Q60 28 95 32" stroke="rgba(255,255,255,0.15)" stroke-width="2" fill="none"/>
+          </svg>
+        </div>
+
+        <div class="logo-bottom-text">SN GAMING YT</div>
+      </div>
+
+    </div><!-- end logo-wrapper -->
+
+    <!-- Divider -->
+    <div class="divider"></div>
+
+    <!-- Page title -->
+    <div class="page-title">
+      <span class="page-title-main glitch-wrapper" data-text="SN GAMING YT">SN GAMING YT</span>
+      <span class="page-title-sub">Official Channel</span>
+    </div>
+
+    <!-- Status bar -->
+    <div class="status-bar">
+      <div class="status-dot"></div>
+      <span>CHANNEL ONLINE</span>
+      <span>•</span>
+      <span>SUBSCRIBE NOW</span>
+    </div>
+
+    <!-- Divider -->
+    <div class="divider"></div>
+
+    <!-- ── DOWNLOAD BUTTON SECTION ── -->
+    <div class="btn-section">
+
+      <div class="btn-label-top">▶ LIMITED TIME OFFER ◀</div>
+
+      <div class="btn-outer-wrap">
+        <!-- expanding glow rings -->
+        <div class="btn-glow-ring"></div>
+        <div class="btn-glow-ring"></div>
+        <div class="btn-glow-ring"></div>
+
+        <!-- Spark particles on button -->
+        <div class="btn-sparks" id="btnSparks"></div>
+
+          <button class="download-btn" id="downloadBtn" onclick="window.open('https://drive.google.com/file/d/1raF4pgwaJeEVjXZz0ZbwdCkY_aYbVosC/view?usp=drivesdk','_blank')">
+  <div class="btn-scanline"></div>
+  ⬇ DOWNLOAD MINECRAFT ⬇
+  <div class="btn-mc-line">
+    <div class="btn-mc-block"></div>
+    FOR FREE — 100% LEGIT
+    <div class="btn-mc-block"></div>
+  </div>
+</button>
+      </div>
+
+    </div><!-- end btn-section -->
+
+  </div><!-- end main-content -->
+
+  <!-- ════════════════════════════════════════
+       JAVASCRIPT
+  ════════════════════════════════════════ -->
+  <script>
+    /* ── STARS ── */
+    (function generateStars() {
+      const layer = document.getElementById('starsLayer');
+      const starColors = ['#ffffff', '#aaddff', '#ffddaa', '#ffaaaa', '#aaffcc'];
+      for (let i = 0; i < 200; i++) {
+        const s = document.createElement('div');
+        s.className = 'star';
+        const size = Math.random() < 0.8 ? Math.random() * 1.5 + 0.5 : Math.random() * 3 + 1.5;
+        const delay = Math.random() * 6;
+        const dur   = Math.random() * 4 + 2;
+        const color = starColors[Math.floor(Math.random() * starColors.length)];
+        s.style.cssText = `
+          width:${size}px; height:${size}px;
+          top:${Math.random()*100}%;
+          left:${Math.random()*100}%;
+          background:${color};
+          box-shadow: 0 0 ${size*2}px ${color};
+          animation-duration:${dur}s;
+          animation-delay:${delay}s;
+        `;
+        layer.appendChild(s);
+      }
+    })();
+
+    /* ── MINECRAFT BLOCKS ── */
+    (function generateMCBlocks() {
+      const container = document.getElementById('mcBlocks');
+      const types = ['grass','grass','grass','dirt','stone','diamond'];
+      for (let i = 0; i < 22; i++) {
+        const b = document.createElement('div');
+        const type = types[Math.floor(Math.random() * types.length)];
+        b.className = `mc-block ${type}`;
+        const size = Math.random() * 14 + 10;
+        const dur  = Math.random() * 10 + 8;
+        const del  = Math.random() * 12;
+        b.style.cssText = `
+          width:${size}px; height:${size}px;
+          left:${Math.random()*100}%;
+          animation-duration:${dur}s;
+          animation-delay:${del}s;
+        `;
+        container.appendChild(b);
+      }
+    })();
+
+    /* ── EMBERS ── */
+    (function generateEmbers() {
+      const container = document.getElementById('embers');
+      const colors = ['#ff4400','#ff8800','#ffcc00','#ff2200','#ff6600'];
+      for (let i = 0; i < 40; i++) {
+        const e = document.createElement('div');
+        e.className = 'ember';
+        const size  = Math.random() * 3 + 1;
+        const dur   = Math.random() * 3 + 1.5;
+        const del   = Math.random() * 5;
+        const dx    = (Math.random() - 0.5) * 80;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        e.style.cssText = `
+          width:${size}px; height:${size}px;
+          left:${Math.random()*100}%;
+          bottom:${Math.random()*60}%;
+          background:${color};
+          box-shadow: 0 0 ${size*3}px ${color};
+          --dx:${dx}px;
+          animation-duration:${dur}s;
+          animation-delay:${del}s;
+        `;
+        container.appendChild(e);
+      }
+    })();
+
+    /* ── LIGHTNING BOLTS ── */
+    (function generateLightning() {
+      const container = document.getElementById('lightning');
+      for (let i = 0; i < 8; i++) {
+        const l = document.createElement('div');
+        l.className = i % 2 === 0 ? 'lightning-bolt' : 'lightning-bolt red';
+        const height = Math.random() * 200 + 80;
+        const dur    = Math.random() * 5 + 3;
+        const del    = Math.random() * 8;
+        l.style.cssText = `
+          left:${Math.random()*100}%;
+          top:${Math.random()*60}%;
+          height:${height}px;
+          animation-duration:${dur}s;
+          animation-delay:${del}s;
+        `;
+        container.appendChild(l);
+      }
+    })();
+
+    /* ── FIRE PARTICLES around ring ── */
+    (function generateFireParticles() {
+      const ring = document.getElementById('fireRing');
+      const COUNT = 24;
+      for (let i = 0; i < COUNT; i++) {
+        const angle  = (i / COUNT) * 360;
+        const radius = 120;
+        const rad    = angle * Math.PI / 180;
+        const cx     = 125 + Math.cos(rad) * radius;
+        const cy     = 125 + Math.sin(rad) * radius;
+        const fp = document.createElement('div');
+        fp.className = 'fire-particle';
+        const size = Math.random() * 8 + 6;
+        const dur  = Math.random() * 0.8 + 0.6;
+        const del  = (i / COUNT) * 2;
+        const r    = Math.floor(230 + Math.random() * 25);
+        const g    = Math.floor(Math.random() * 120);
+        fp.style.cssText = `
+          width:${size}px; height:${size}px;
+          left:${cx}px; top:${cy}px;
+          background: rgb(${r},${g},0);
+          box-shadow: 0 0 ${size}px rgb(${r},${g},0);
+          animation-duration:${dur}s;
+          animation-delay:${del}s;
+          transform-origin: center bottom;
+        `;
+        ring.appendChild(fp);
+      }
+    })();
+
+    /* ── BUTTON SPARKS ── */
+    (function generateBtnSparks() {
+      const container = document.getElementById('btnSparks');
+      const sparkColors = ['#ff0000','#ff4400','#ff8800','#ffcc00','#ff2200'];
+      const positions = [
+        {left:'5%', top:'-4px'}, {left:'20%', top:'-4px'}, {left:'40%', top:'-4px'},
+        {left:'60%', top:'-4px'}, {left:'80%', top:'-4px'}, {left:'95%', top:'-4px'},
+        {left:'5%', bottom:'-4px'}, {left:'25%', bottom:'-4px'}, {left:'50%', bottom:'-4px'},
+        {left:'75%', bottom:'-4px'}, {left:'95%', bottom:'-4px'},
+        {top:'20%', left:'-4px'}, {top:'50%', left:'-4px'}, {top:'80%', left:'-4px'},
+        {top:'20%', right:'-4px'}, {top:'50%', right:'-4px'}, {top:'80%', right:'-4px'},
+      ];
+      positions.forEach((pos, i) => {
+        const sp = document.createElement('div');
+        sp.className = 'btn-spark';
+        const color = sparkColors[Math.floor(Math.random() * sparkColors.length)];
+        const size  = Math.random() * 4 + 2;
+        const dur   = Math.random() * 0.8 + 0.5;
+        const del   = i * 0.12;
+        const sx    = (Math.random() - 0.5) * 30;
+        const sy    = -(Math.random() * 25 + 10);
+        let posStr  = '';
+        if (pos.left)   posStr += `left:${pos.left};`;
+        if (pos.right)  posStr += `right:${pos.right};`;
+        if (pos.top)    posStr += `top:${pos.top};`;
+        if (pos.bottom) posStr += `bottom:${pos.bottom};`;
+        sp.style.cssText = `
+          ${posStr}
+          width:${size}px; height:${size}px;
+          background:${color};
+          box-shadow: 0 0 ${size*2}px ${color};
+          --sx:${sx}px; --sy:${sy}px;
+          animation-duration:${dur}s;
+          animation-delay:${del}s;
+        `;
+        container.appendChild(sp);
+      });
+    })();
+
+    /* ── BUTTON CLICK BURST ── */
+    document.getElementById('downloadBtn').addEventListener('click', function(e) {
+      // Big flash on click
+      const flash = document.createElement('div');
+      flash.style.cssText = `
+        position: fixed; inset: 0; background: rgba(255,50,0,0.15);
+        z-index: 100; pointer-events: none;
+        animation: flashOut 0.4s ease-out forwards;
+      `;
+      document.head.insertAdjacentHTML('beforeend',
+        '<style>@keyframes flashOut{0%{opacity:1}100%{opacity:0}}</style>'
+      );
+      document.body.appendChild(flash);
+      setTimeout(() => flash.remove(), 400);
+    });
+
+    /* ── PARALLAX subtle mouse effect ── */
+    document.addEventListener('mousemove', function(e) {
+      const cx = window.innerWidth  / 2;
+      const cy = window.innerHeight / 2;
+      const dx = (e.clientX - cx) / cx;
+      const dy = (e.clientY - cy) / cy;
+      const halo = document.querySelector('.outer-halo');
+      if (halo) {
+        halo.style.transform = `translate(calc(-50% + ${dx * 15}px), calc(-50% + ${dy * 15}px))`;
+      }
+    });
+  </script>
+
+</body>
+  </html>
